@@ -1,0 +1,720 @@
+<title>Erisa Ahmeti</title>
+<style>
+  /* ---------------------------------------------------------------
+     Design: dark, terminal/optimization-console aesthetic.
+     Deliberate single dark world (per explicit "dark, techy" brief) —
+     background + every color declared explicitly, no light variant.
+     Palette: deep ink ground, amber signal accent (primary),
+     teal accent (secondary / data-adjacent), warm off-white text.
+     Type: monospace for display/labels (code, terminal, optimization
+     logs — her actual working material), humanist system sans for
+     reading copy.
+  --------------------------------------------------------------- */
+  :root {
+    --bg: #0b0e14;
+    --bg-raised: #12151f;
+    --bg-raised-2: #171b28;
+    --line: rgba(232, 230, 223, 0.12);
+    --line-soft: rgba(232, 230, 223, 0.07);
+    --text: #e9e6dd;
+    --text-dim: #9aa0ae;
+    --text-faint: #666d7d;
+    --amber: #e8a33d;
+    --amber-dim: #b9812f;
+    --teal: #5fd0bd;
+    --teal-dim: #3f9384;
+
+    --mono: ui-monospace, "Cascadia Code", Consolas, "SFMono-Regular", "Liberation Mono", Menlo, monospace;
+    --sans: "Segoe UI", ui-sans-serif, system-ui, Roboto, Helvetica, Arial, sans-serif;
+
+    --container: 920px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(var(--line-soft) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+  }
+
+  h1, h2, h3 { text-wrap: balance; margin: 0; font-weight: 600; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--amber);
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 14px;
+  }
+  .eyebrow::before { content: "›"; color: var(--text-faint); }
+
+  /* ---------- nav ---------- */
+  header.nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(11, 14, 20, 0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .nav .logo {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  .nav .logo span { color: var(--amber); }
+  .nav ul {
+    list-style: none;
+    display: flex;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+  }
+  .nav a.navlink {
+    text-decoration: none;
+    color: var(--text-dim);
+    padding: 4px 2px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .nav a.navlink:hover, .nav a.navlink:focus-visible {
+    color: var(--amber);
+    border-color: var(--amber-dim);
+  }
+  .nav a:focus-visible, a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    padding: 84px 0 70px;
+    overflow: hidden;
+  }
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: 24px;
+  }
+  .hero .kicker {
+    font-family: var(--mono);
+    color: var(--teal);
+    font-size: 0.85rem;
+    margin: 0 0 18px;
+  }
+  .hero .kicker::before { content: "$ "; color: var(--text-faint); }
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(2.1rem, 5vw, 3.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .hero .role {
+    margin-top: 18px;
+    font-size: 1.2rem;
+    color: var(--text);
+    font-weight: 600;
+  }
+  .hero .role .accent { color: var(--amber); }
+  .hero .subrole {
+    margin-top: 8px;
+    color: var(--text-dim);
+    font-size: 0.98rem;
+    max-width: 46ch;
+  }
+  .hero .cta-row {
+    display: flex;
+    gap: 14px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    text-decoration: none;
+    padding: 11px 18px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  }
+  .btn-primary {
+    background: var(--amber);
+    color: #16130a;
+    border-color: var(--amber);
+    font-weight: 600;
+  }
+  .btn-primary:hover { transform: translateY(-1px); background: #f0ac47; }
+  .btn-ghost { color: var(--text); }
+  .btn-ghost:hover { border-color: var(--teal-dim); color: var(--teal); }
+
+  .hero-art {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    max-width: 420px;
+    justify-self: center;
+  }
+  .hero-art svg { width: 100%; height: 100%; display: block; }
+  .hero-art .caption {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 760px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+    .hero-art { max-width: 260px; margin: 40px auto 0; order: -1; }
+  }
+
+  /* ---------- generic section ---------- */
+  section { padding: 68px 0; position: relative; }
+  section + section { border-top: 1px solid var(--line); }
+  .section-head { margin-bottom: 40px; }
+  .section-head h2 {
+    font-size: 1.6rem;
+    font-family: var(--sans);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ---------- about ---------- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 48px;
+  }
+  .about-copy p {
+    color: var(--text-dim);
+    max-width: 62ch;
+    margin: 0 0 18px;
+  }
+  .about-copy strong { color: var(--text); font-weight: 600; }
+
+  .toolkit-title {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 12px;
+  }
+  .tag-group { margin-bottom: 20px; }
+  .tag-group:last-child { margin-bottom: 0; }
+  .tag-group .glabel {
+    font-size: 0.78rem;
+    color: var(--teal);
+    font-family: var(--mono);
+    margin: 0 0 8px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    padding: 4px 9px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 760px) {
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  /* ---------- experience timeline ---------- */
+  .timeline { position: relative; }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(var(--line), var(--line) 92%, transparent);
+  }
+  .tl-item {
+    position: relative;
+    padding-left: 34px;
+    padding-bottom: 36px;
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--amber-dim);
+  }
+  .tl-item.is-current .tl-dot { background: var(--amber); border-color: var(--amber); box-shadow: 0 0 0 4px rgba(232,163,61,0.15); }
+  .tl-item.is-edu .tl-dot { border-color: var(--teal-dim); }
+  .tl-item.is-edu.is-current .tl-dot { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 0 4px rgba(95,208,189,0.15); }
+
+  .tl-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+  .tl-date {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+  .tl-kind {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 1px 7px;
+    border-radius: 2px;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+  }
+  .tl-item.is-edu .tl-kind { color: var(--teal); border-color: var(--teal-dim); }
+  .tl-item:not(.is-edu) .tl-kind { color: var(--amber); border-color: var(--amber-dim); }
+
+  .tl-role { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+  .tl-org { color: var(--text-dim); font-size: 0.92rem; margin-top: 2px; }
+  .tl-list {
+    margin: 12px 0 0;
+    padding-left: 18px;
+    color: var(--text-dim);
+    font-size: 0.93rem;
+  }
+  .tl-list li { margin-bottom: 6px; }
+  .tl-list li::marker { color: var(--text-faint); }
+
+  /* ---------- projects ---------- */
+  .proj-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 900px) { .proj-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 620px) { .proj-grid { grid-template-columns: 1fr; } }
+
+  .proj-card {
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.18s ease, transform 0.18s ease;
+  }
+  .proj-card:hover { border-color: var(--amber-dim); transform: translateY(-2px); }
+  .proj-index {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    margin-bottom: 14px;
+  }
+  .proj-card h3 { font-size: 1.05rem; margin-bottom: 10px; }
+  .proj-card p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin: 0 0 16px;
+    flex-grow: 1;
+  }
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .proj-tags .tag { font-size: 0.7rem; }
+
+  /* ---------- contact ---------- */
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: start;
+  }
+  @media (max-width: 760px) { .contact-wrap { grid-template-columns: 1fr; } }
+  .contact-lead {
+    font-size: 1.3rem;
+    color: var(--text);
+    max-width: 34ch;
+    text-wrap: balance;
+  }
+  .contact-lead .accent { color: var(--amber); }
+  .contact-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .contact-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .contact-card:hover { border-color: var(--teal-dim); background: var(--bg-raised-2); }
+  .contact-card .label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .contact-card .value { font-size: 0.94rem; }
+  .contact-card .arrow { color: var(--teal); font-family: var(--mono); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 26px 0 40px;
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    color: var(--text-faint);
+  }
+</style>
+
+<header class="nav">
+  <div class="wrap">
+    <a href="#top" class="logo">erisa<span>.</span>ahmeti</a>
+    <ul>
+      <li><a class="navlink" href="#about">about</a></li>
+      <li><a class="navlink" href="#experience">experience</a></li>
+      <li><a class="navlink" href="#projects">projects</a></li>
+      <li><a class="navlink" href="#contact">contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="kicker">whoami</p>
+        <h1>Erisa<br>Ahmeti</h1>
+        <p class="role">AI &amp; Machine Learning <span class="accent">Engineer</span></p>
+        <p class="subrole">MSc candidate in Artificial Intelligence &amp; Optimization, currently building marketing automation systems as a Salesforce Marketing Cloud Developer at Deloitte Albania.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="mailto:erisaahmeti31@gmail.com">email me →</a>
+          <a class="btn btn-ghost" href="https://www.linkedin.com/in/erisaahmeti/" target="_blank" rel="noopener">linkedin ↗</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 420 420" fill="none">
+          <ellipse cx="230" cy="228" rx="192" ry="152" transform="rotate(-8 230 228)" stroke="#5fd0bd" stroke-opacity="0.14" stroke-width="1.2"/>
+          <ellipse cx="230" cy="233" rx="150" ry="120" transform="rotate(6 230 233)" stroke="#5fd0bd" stroke-opacity="0.20" stroke-width="1.2"/>
+          <ellipse cx="228" cy="237" rx="112" ry="90" transform="rotate(-4 228 237)" stroke="#5fd0bd" stroke-opacity="0.28" stroke-width="1.2"/>
+          <ellipse cx="226" cy="240" rx="76" ry="60" transform="rotate(5 226 240)" stroke="#5fd0bd" stroke-opacity="0.4" stroke-width="1.2"/>
+          <ellipse cx="224" cy="242" rx="42" ry="34" transform="rotate(-3 224 242)" stroke="#5fd0bd" stroke-opacity="0.55" stroke-width="1.2"/>
+          <path d="M55,58 C118,86 88,158 138,178 C178,193 168,224 203,234 C214,238 217,240 222,244"
+                fill="none" stroke="#e8a33d" stroke-width="1.4" stroke-dasharray="3 4" stroke-linecap="round"/>
+          <circle cx="55" cy="58" r="4.5" fill="#0b0e14" stroke="#e8a33d" stroke-width="1.4"/>
+          <circle cx="126" cy="132" r="3.6" fill="#0b0e14" stroke="#e8a33d" stroke-width="1.4"/>
+          <circle cx="170" cy="192" r="3" fill="#0b0e14" stroke="#e8a33d" stroke-width="1.4"/>
+          <circle cx="203" cy="234" r="2.4" fill="#0b0e14" stroke="#e8a33d" stroke-width="1.4"/>
+          <circle cx="222" cy="244" r="5.5" fill="#e8a33d"/>
+        </svg>
+        <p class="caption">gradient descent → minimum</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">cat about.md</p>
+        <h2>About</h2>
+      </div>
+      <div class="about-grid reveal">
+        <div class="about-copy">
+          <p>I'm a <strong>Computer Engineer and AI Master's student</strong> passionate about applying artificial intelligence to solve real-world problems. My interests include machine learning, deep learning, data analysis, and intelligent systems — and I'm continuously building on that through academic work, personal projects, and hands-on experience.</p>
+          <p>Professionally, I work as a <strong>Salesforce Marketing Cloud Developer at Deloitte</strong>, where I develop marketing automation solutions, write SQL queries, build personalized customer journeys, and solve technical challenges for global enterprise clients. This experience has strengthened my problem-solving skills and my ability to design reliable, data-driven solutions.</p>
+          <p>I'm looking for opportunities where I can apply and further develop my <strong>AI and software engineering skills</strong> while working on innovative projects with real impact.</p>
+        </div>
+        <div class="toolkit">
+          <p class="toolkit-title">Toolkit</p>
+          <div class="tag-group">
+            <p class="glabel">AI &amp; Machine Learning</p>
+            <div class="tags">
+              <span class="tag">Machine Learning</span><span class="tag">Deep Learning</span>
+              <span class="tag">RAG</span><span class="tag">Vision-Language Models</span>
+              <span class="tag">Data Analysis</span>
+            </div>
+          </div>
+          <div class="tag-group">
+            <p class="glabel">Programming</p>
+            <div class="tags">
+              <span class="tag">Python</span><span class="tag">Java</span><span class="tag">Spring Boot</span>
+              <span class="tag">JavaScript</span><span class="tag">PHP</span>
+            </div>
+          </div>
+          <div class="tag-group">
+            <p class="glabel">Web &amp; Data</p>
+            <div class="tags">
+              <span class="tag">React.js</span><span class="tag">HTML/CSS</span>
+              <span class="tag">MySQL</span><span class="tag">Oracle DB</span>
+            </div>
+          </div>
+          <div class="tag-group">
+            <p class="glabel">Salesforce Marketing Cloud</p>
+            <div class="tags">
+              <span class="tag">Journey Builder</span><span class="tag">Automation Studio</span>
+              <span class="tag">AMPscript</span><span class="tag">SQL Segmentation</span>
+            </div>
+          </div>
+          <div class="tag-group">
+            <p class="glabel">Languages</p>
+            <div class="tags">
+              <span class="tag">Albanian — native</span><span class="tag">English — C1</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">git log --oneline --all</p>
+        <h2>Experience &amp; Education</h2>
+      </div>
+      <div class="timeline reveal">
+
+        <div class="tl-item is-current">
+          <span class="tl-dot"></span>
+          <div class="tl-meta">
+            <span class="tl-date">Apr 2025 — Present</span>
+            <span class="tl-kind">Work</span>
+          </div>
+          <div class="tl-role">Salesforce Marketing Cloud Developer</div>
+          <div class="tl-org">Deloitte Albania · Full-time</div>
+          <ul class="tl-list">
+            <li>Develop and manage multi-channel marketing campaigns (Email, SMS, Automation) for a global luxury brand.</li>
+            <li>Implement dynamic personalization and segmentation logic through AMPscript and customer Data Extensions.</li>
+            <li>Build automated customer journeys in Journey Builder and recurring workflows in Automation Studio.</li>
+            <li>Handle large-scale customer datasets, ensuring accurate targeting, GDPR compliance, and campaign performance optimization.</li>
+          </ul>
+        </div>
+
+        <div class="tl-item">
+          <span class="tl-dot"></span>
+          <div class="tl-meta">
+            <span class="tl-date">Mar 2025 · 1 mo</span>
+            <span class="tl-kind">Work</span>
+          </div>
+          <div class="tl-role">Salesforce Marketing Cloud Developer Intern</div>
+          <div class="tl-org">Deloitte Albania</div>
+          <ul class="tl-list">
+            <li>Structured lab-based internship covering the fundamentals of Salesforce Marketing Cloud.</li>
+            <li>Hands-on with Email Studio, Journey Builder, Automation Studio, and Contact Builder.</li>
+            <li>Learned customer segmentation, Data Extensions, and marketing automation workflows.</li>
+          </ul>
+        </div>
+
+        <div class="tl-item is-edu is-current">
+          <span class="tl-dot"></span>
+          <div class="tl-meta">
+            <span class="tl-date">Oct 2024 — Present</span>
+            <span class="tl-kind">Education</span>
+          </div>
+          <div class="tl-role">MSc. Artificial Intelligence &amp; Optimization</div>
+          <div class="tl-org">Joint program — Universiteti Politeknik i Tiranës &amp; Université de technologie de Compiègne</div>
+          <ul class="tl-list">
+            <li>Coursework: Artificial Intelligence, Machine Learning, Cloud Computing, Statistics, Deep Learning.</li>
+          </ul>
+        </div>
+
+        <div class="tl-item">
+          <span class="tl-dot"></span>
+          <div class="tl-meta">
+            <span class="tl-date">Jul 2024 — Oct 2024</span>
+            <span class="tl-kind">Work</span>
+          </div>
+          <div class="tl-role">Service Desk Support Intern</div>
+          <div class="tl-org">Balfin Group</div>
+          <ul class="tl-list">
+            <li>Managed and prioritized helpdesk requests, ensuring quick and effective resolutions.</li>
+            <li>Collaborated with the team to identify and resolve common IT issues.</li>
+          </ul>
+        </div>
+
+        <div class="tl-item is-edu">
+          <span class="tl-dot"></span>
+          <div class="tl-meta">
+            <span class="tl-date">Oct 2021 — Oct 2024</span>
+            <span class="tl-kind">Education</span>
+          </div>
+          <div class="tl-role">BSc. Computer Engineering</div>
+          <div class="tl-org">Universiteti Politeknik i Tiranës</div>
+          <ul class="tl-list">
+            <li>Coursework: Programming, Algorithms, Data Structures, Databases.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">ls projects/</p>
+        <h2>Projects</h2>
+      </div>
+      <div class="proj-grid reveal">
+        <div class="proj-card">
+          <p class="proj-index">01 · vlm_tutor.py</p>
+          <h3>VLM-based AI Tutor</h3>
+          <p>An interactive Vision-Language Model chatbot tutor for course-specific Q&amp;A and exam prep, using Retrieval-Augmented Generation grounded in lecture materials and books. Deployed with Gradio, experimenting with Qwen-VLM.</p>
+          <div class="proj-tags">
+            <span class="tag">Python</span><span class="tag">RAG</span><span class="tag">Qwen-VLM</span><span class="tag">Gradio</span>
+          </div>
+        </div>
+        <div class="proj-card">
+          <p class="proj-index">02 · phishing_detect.py</p>
+          <h3>Phishing Website Detection</h3>
+          <p>A machine learning model to detect phishing websites, comparing Random Forest, Support Vector Classifier, and an MLP neural network on a Kaggle dataset — aimed at high-accuracy detection to improve online security.</p>
+          <div class="proj-tags">
+            <span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Random Forest</span><span class="tag">SVM</span>
+          </div>
+        </div>
+        <div class="proj-card">
+          <p class="proj-index">03 · student_ms/</p>
+          <h3>Student Management System</h3>
+          <p>A full-stack application for digital attendance registration and delivering exam grades from lecturers to students — modernizing academic administration for efficiency and transparency.</p>
+          <div class="proj-tags">
+            <span class="tag">Spring Boot</span><span class="tag">React.js</span><span class="tag">MySQL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">ping erisa --info</p>
+        <h2>Contact</h2>
+      </div>
+      <div class="contact-wrap reveal">
+        <p class="contact-lead">Open to roles where I can grow into <span class="accent">AI and software engineering</span> full-time. Reach out — I reply fast.</p>
+        <div class="contact-cards">
+          <a class="contact-card" href="mailto:erisaahmeti31@gmail.com">
+            <span><span class="label">Email</span><span class="value">erisaahmeti31@gmail.com</span></span>
+            <span class="arrow">↗</span>
+          </a>
+          <a class="contact-card" href="https://www.linkedin.com/in/erisaahmeti/" target="_blank" rel="noopener">
+            <span><span class="label">LinkedIn</span><span class="value">linkedin.com/in/erisaahmeti</span></span>
+            <span class="arrow">↗</span>
+          </a>
+          <a class="contact-card" href="tel:+355685171514">
+            <span><span class="label">Phone</span><span class="value">+355 68 517 1514</span></span>
+            <span class="arrow">↗</span>
+          </a>
+          <div class="contact-card" style="cursor:default;">
+            <span><span class="label">Location</span><span class="value">Tirana, Albania</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Erisa Ahmeti</span>
+    <span>built with intent, not a template</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var items = document.querySelectorAll('.reveal');
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+</script>
